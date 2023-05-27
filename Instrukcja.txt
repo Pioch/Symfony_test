@@ -1,0 +1,4 @@
+symfony new my_project_directory --version="6.2.*" --webapp -> utworzenie projektu
+symfony server:start - uruchomienie serwera na Windows
+php bin/console server:run  - uruchomienie serwera na Linux
+composer require symfony/<component_name> - instalacja komponentu
