@@ -1,6 +1,27 @@
-symfony new my_project_directory --version="6.2.*" --webapp -> utworzenie projektu
-symfony server:start - uruchomienie serwera na Windows
-php bin/console server:run  - uruchomienie serwera na Linux
-composer require symfony/<component_name> - instalacja komponentu
+1. Tworzenie projektu i komendy
+- symfony new my_project_directory --version="6.2.*" --webapp -> utworzenie projektu
+- symfony server:start - uruchomienie serwera na Windows
+- php bin/console server:run  - uruchomienie serwera na Linux
+- composer require symfony/<component_name> - instalacja komponentu
+- console debug:route -> wyświetla wszystkie dostępne ścieżki
+- symfony console -> Wyświetla wszystkie dostępne komendy w konsoli
+- W konsoli symfony console make:controller <nazwa kontrolera>  -> Tworzy nowy kontroler
+- symfony console help -> Wyświetlenie pomocy 
 
-36 minuta
+2. Opisy folderów
+- W vendor/ -> Wszystki zainstalowane komponenty
+- W templates/ -> Strony utworzene z kontrolerem
+
+
+3. Kontrolery
+ - #[Route('/ścieżka', name: 'nazwa')] //Ustawienie ścieżki  /ścieżka -> przekieruje do strony podanej niżej w funkcji
+    public function oldMethod(): Response {
+        return $this->render('folder/index.html.twig', [
+            'controller_name' => 'MoviesController',
+        ]);
+    }
+
+- #[Route('/movies/{name}', name: 'app_movies')] {name} przy ścieżce pozwala na wyświetlenie strony z funkcji niżej z dowolnej ścieżki /nazwa_folderu/name, gdzie name jest dowolne
+- #[Route('/movies/{name}', name: 'app_movies', methods:['GET', 'HEAD'])]  //methods definiuje jakie metody są dostępne przy zdefiniowanej ścieżce
+- #[Route('/movies/{name}', name: 'app_movies', defaults: ['name' => null], methods:['GET', 'HEAD'])] -> default definiuje domyślne wartości dla parametru w ścieżce
+- public function index($name): Response //$name -> Odczytanie wartości ze ścieżki nazwa_folderu/{name}
