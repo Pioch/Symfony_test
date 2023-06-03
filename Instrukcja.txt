@@ -25,3 +25,35 @@
 - #[Route('/movies/{name}', name: 'app_movies', methods:['GET', 'HEAD'])]  //methods definiuje jakie metody są dostępne przy zdefiniowanej ścieżce
 - #[Route('/movies/{name}', name: 'app_movies', defaults: ['name' => null], methods:['GET', 'HEAD'])] -> default definiuje domyślne wartości dla parametru w ścieżce
 - public function index($name): Response //$name -> Odczytanie wartości ze ścieżki nazwa_folderu/{name}
+
+4. Widoki
+- composer require twig -> teorzy base.html.twig w templates
+- domyslnie strony html.twig są w templates
+- return $this -> render('nazwa_strony.html.twig', [parametr1 => wartość, ...]); -> otwarcie określonej strony z parametrami
+- {{title}}  -> przakazanie zmiennej do strony html z Kontrolera
+
+- warunki:
+{% if title %}
+    <p>{{title}}</p>
+{% else %}
+    <p>Brak tytułu</p>
+{% endif %}
+
+5. Używanie układu strony z base.html.twig na innych stronach
+- {% extends 'nazwa_strony.html.twig' %} -> dołączenie innej strony na stronie
+- <title>{% block title %}Welcome!{% endblock %}</title> -> tutuł będzie dołączony do strony z pliku w {% extends %}
+- {#komentarz#} -> zakomentowanie czegoś w html.twig
+
+- Pętla for:
+    {% for i in movies %} 
+        <li>{{i}}</li>
+    {% endfor %}
+
+- {{_self}} -> zmienna globalna zawierająca nazwę strony
+- {{_charset}} -> zmienne zawierająca typ znaków (UTF-8)
+
+Defincja zmiennych globalnych: w config/packages/twig.yaml pod default_path należy utworzyć globals: 
+np. globals:
+        author: Piotr //author -> zmienna
+
+czas: 1:15:30
