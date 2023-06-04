@@ -56,4 +56,38 @@ Defincja zmiennych globalnych: w config/packages/twig.yaml pod default_path nale
 np. globals:
         author: Piotr //author -> zmienna
 
-czas: 1:15:30
+5. Konfiguracja bazy danych
+Biblioteki wymagane:
+- composer require symfony/orm-pack
+- composer require --dev symfony/maker-bundle
+
+- .env -> plik konfiguracyjny aplkacji (środowisko, baza danych)
+- konfiguracja phpmyadmin -> phpMyAdmin/config.inc.php:
+$cfg['Servers'][$i]['user'] = 'root';
+$cfg['Servers'][$i]['password'] = 'placki123';
+
+DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=8.0.32&charset=utf8mb4":
+- zamiast db_user nazwa użytkownika
+- zamiast db_password hasło
+- zamiast db_name nazwa bazy danych
+
+Tworzenie klasy tablicy: (dla każdego entity automatycznie dodawana jest kolumna z id)
+- symfony console make:entity nazwa_tablicy
+- później podaje się nazwę kolumny, typ, max ilość znaków, czy może być null
+- następnie można dodać następne kolumny
+- by wyjść CTRL + c
+
+Utworzona klasa jest w src/Entity
+- symfony console make:entity istniejąca_klasa -> dodanie nowej kolumny
+Utworzenie zależności między dwoma klasami tablic:
+- typ danych ManyToMany 
+- wpisanie nazwy klasy tablicy od której ma być zależna kolumna
+- następne yes by dodać fukcję do obu klas
+- cnazwa nowej kolumny w zależnej tablicy (klasie)
+
+Migracja Utworzony tabel (klas entities) z bazą danych:
+- symfony console make:migration
+- symfony console doctrine:migration:migrate 
+- yes
+
+czas: 1:39:22
