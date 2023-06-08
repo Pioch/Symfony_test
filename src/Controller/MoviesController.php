@@ -19,8 +19,9 @@ class MoviesController extends AbstractController
     #[Route('/movies', name: 'app_movies')]
     public function index(): Response {
         $repository = $this->em->getRepository(Movie::class);
-        //$movies = $repository->findOneBy(['id' => 1], ['id' => 'DESC']);
-        $movies = $repository->getClassName();
+        //$movies = $repository->findOneBy(['id' => 5], ['id' => 'DESC']);
+        $movies = $repository->findIdGreaterThen(2);
+        //$movies = $repository->getClassName();
         dd($movies);
 
         return $this -> render('index.html.twig');

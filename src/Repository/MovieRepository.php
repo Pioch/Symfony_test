@@ -39,6 +39,15 @@ class MovieRepository extends ServiceEntityRepository
         }
     }
 
+    //nowa funkcja
+    public function findIdGreaterThen(int $value) {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT m FROM App\Entity\Movie m WHERE m.id > :id_val')->setParameter('id_val', $value);
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Movie[] Returns an array of Movie objects
 //     */
