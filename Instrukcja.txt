@@ -11,9 +11,14 @@
 2. Opisy folderów
 - W vendor/ -> Wszystki zainstalowane komponenty
 - W templates/ -> Strony utworzene z kontrolerem
+- W Controller/ -> Repozytoria
+- W templates/ -> srony html.twig
+- W Entity -> Wsystkie klasy entity (odnoszące się do tablic w DB)
+- By podpiąć plik css lub js czy inny musi się znajdować w public
 
 
 3. Kontrolery
+W kontrolerze są funkcję przekierowujące do stron, zmienne przekazywane na strone, zmiene z dostępem do funkcji repozytorium
  - #[Route('/ścieżka', name: 'nazwa')] //Ustawienie ścieżki  /ścieżka -> przekieruje do strony podanej niżej w funkcji
     public function oldMethod(): Response {
         return $this->render('folder/index.html.twig', [
@@ -25,6 +30,8 @@
 - #[Route('/movies/{name}', name: 'app_movies', methods:['GET', 'HEAD'])]  //methods definiuje jakie metody są dostępne przy zdefiniowanej ścieżce
 - #[Route('/movies/{name}', name: 'app_movies', defaults: ['name' => null], methods:['GET', 'HEAD'])] -> default definiuje domyślne wartości dla parametru w ścieżce
 - public function index($name): Response //$name -> Odczytanie wartości ze ścieżki nazwa_folderu/{name}
+
+
 
 4. Widoki
 - composer require twig -> teorzy base.html.twig w templates
@@ -71,8 +78,9 @@ DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=8
 - zamiast db_password hasło
 - zamiast db_name nazwa bazy danych
 
-Tworzenie klasy tablicy: (dla każdego entity automatycznie dodawana jest kolumna z id)
-- symfony console make:entity nazwa_tablicy
+Tworzenie klasy tabeli (Entity): (dla każdego entity automatycznie dodawana jest kolumna z id)
+W klasie entity są funkcję do odczytywnia i ustawiania wartości kolumn w tablicy
+- symfony console make:entity nazwa_tabeli
 - później podaje się nazwę kolumny, typ, max ilość znaków, czy może być null
 - następnie można dodać następne kolumny
 - by wyjść CTRL + c
@@ -81,13 +89,64 @@ Utworzona klasa jest w src/Entity
 - symfony console make:entity istniejąca_klasa -> dodanie nowej kolumny
 Utworzenie zależności między dwoma klasami tablic:
 - typ danych ManyToMany 
-- wpisanie nazwy klasy tablicy od której ma być zależna kolumna
+- wpisanie nazwy klasy tabeli od której ma być zależna kolumna
 - następne yes by dodać fukcję do obu klas
-- cnazwa nowej kolumny w zależnej tablicy (klasie)
+- cnazwa nowej kolumny w zależnej tabeli (klasie)
 
 Migracja Utworzony tabel (klas entities) z bazą danych:
 - symfony console make:migration
 - symfony console doctrine:migration:migrate 
 - yes
 
-czas: 1:39:22
+Relacje między tabelami:
+- ManyToOne -> Dodanie do pierwszej tabela kolumny np. z id z drugiej tabeli lub utworzenie nowej tabeli z id pierwszej i z id drugiej tabeli
+- OneToMany -> Dodanie do pierwszej tabeli id z drugiej i dodanie do drugiej tabeli id z pierwszej
+- ManyToMany -> Tworzy nową tablice łączącą pierwszą i drugą (id z pierwszej i id z drugiej tabeli)
+
+6. Sztuczne dane
+- composer require --dev doctrine/doctrine-fixtures-bundle -> Dodaje nowe komendy:
+- symfony console doctrine:fixtures:load -> czyści zawartość bazy danych i tworzy w src/DataFixtures/AppFixtures.php
+- w DataFixtures można utworzyć nowy plik (skopiować wszystko z automatycznie utworzonego) i po dopisaniu:
+ use App\Entity\NazwaKlasy; mozna używać funkcji do dodawania danych to tabeli
+ - kolejne wywołanie symfony console doctrine:fixtures:load wykona zapytania z nowo utworzonego pliku
+
+Dodanie danych to tabeli łączącej dwie:
+ pod $manager->flush();
+ - $this->addReference('nazwa_referencji', $nazwa_zmiennej);
+ - w drugim pliku z klasą tworzącą dane do której odnosi się referencja przed $manager->persist($movie); : $movie->addActor($this->getReference('nazwa_referencji')); 
+
+7. Repozytoria Entity.
+W repozytoriach są funkcję do zapisywania i usuwania wierszów z tabeli
+- w kontrolerze klasy dodanie do funkcji public function index(MovieRepository $movieRepository) -> pozwala na dostęp do funkcji danego repozytorium w bieżącej funkcji
+- dd($zmienna); -> wyświetla zawartość zmiennej na stronie (pododne do var_dump)
+
+Wykorzystanie EntityManagerInterface (pozwala na zrobienie tego co dodanie repozytorium do funkcji tylko daje dostęp do większej ilości funkcji)
+- trzeba dodać:
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Nazwa_entity;
+np.:  public function index(EntityManagerInterface $em): Response {
+        $repository = $em->getRepository(Movie::class);
+        $movies = $repository->findAll();
+        dd($movies);
+
+        return $this -> render('index.html.twig');
+    }
+
+Konstruktor w Kontrolerze:
+private $em;
+    public function __construct(EntityManagerInterface $em) {
+        $this->em = $em;
+    }
+    Wtedy nie trzeba dodawać EntityManagerInterface $em w argumentach funkcji oraz $em zamienić na $this->em
+
+Funkcje w repozytoriach:
+- findAll() -> Select * From table_name
+- find(id_nr) -> Select * From table_name Where id = id_nr
+- findBy([], ['id' => 'DESC']) -> Select * From table_name Order By id DESC
+- findByOne([warunek1, warunek2, ...], [sortowanie]) -> Select * From table_name Where warunek1 and warunek2 ... Order by np. id DESC (warunek kolumna = wartość)
+- cont([warunek]) -> liczy wiersze Select Count() From table_name Where warunek  (warunek kolumna = wartość)
+- getClassName() > zwraca nazwę klasy
+
+8. Assets
+
+czas: 2:14:15
