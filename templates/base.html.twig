@@ -7,11 +7,10 @@
         <script src="libs/jquery_3_6_0.min.js"></script>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
-            
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>

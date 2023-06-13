@@ -7,7 +7,7 @@
 - symfony console -> Wyświetla wszystkie dostępne komendy w konsoli
 - W konsoli symfony console make:controller <nazwa kontrolera>  -> Tworzy nowy kontroler
 - symfony console help -> Wyświetlenie pomocy 
-- composer update -> aktualizuje biblioteki
+- symfony composer update -> aktualizuje biblioteki
 
 2. Opisy folderów
 - W vendor/ -> Wszystki zainstalowane komponenty
@@ -105,7 +105,7 @@ Relacje między tabelami:
 - ManyToMany -> Tworzy nową tablice łączącą pierwszą i drugą (id z pierwszej i id z drugiej tabeli)
 
 6. Sztuczne dane
-- composer require --dev doctrine/doctrine-fixtures-bundle -> Dodaje nowe komendy:
+- symfony composer require --dev doctrine/doctrine-fixtures-bundle -> Dodaje nowe komendy:
 - symfony console doctrine:fixtures:load -> czyści zawartość bazy danych i tworzy w src/DataFixtures/AppFixtures.php
 - w DataFixtures można utworzyć nowy plik (skopiować wszystko z automatycznie utworzonego) i po dopisaniu:
  use App\Entity\NazwaKlasy; mozna używać funkcji do dodawania danych to tabeli
@@ -149,5 +149,11 @@ Funkcje w repozytoriach:
 - getClassName() > zwraca nazwę klasy
 
 8. Assets
+- Sprawdzenie czy node jest zainstalowany: node -v
+- symfony composer require symfony/webpack-encore-bundle -> instalacja paczki webpack do tworzenia assetów
+- w webpack.config.js -> konfiguracja paczki webpack
+- npm install do działania webpack
+- npm run dev -> kompilacja assetów webpack (tworzy/aktualizuje folder public/build)
+- symfony composer require symfony/asset -> paczka do zarządzania assetami
 
-czas: 2:14:15
+czas: 2:23:00

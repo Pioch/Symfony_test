@@ -20,7 +20,7 @@ class MoviesController extends AbstractController
     public function index(): Response {
         $repository = $this->em->getRepository(Movie::class);
         //$movies = $repository->findOneBy(['id' => 5], ['id' => 'DESC']);
-        $movies = $repository->findIdGreaterThen(2);
+        $movies = $repository->findIdGreaterThen(1);
         //$movies = $repository->getClassName();
         dd($movies);
 
@@ -30,7 +30,7 @@ class MoviesController extends AbstractController
     
     //[Route('/movies', name: 'app_movies')]
     //#[Route('/movies/{name}', name: 'app_movies')] //{name} przy ścieżce pozwala na wyświetlenie strony z funkcji niżej z dowolnej ścieżki /nazwa_folderu/name, gdzie name jest dowolne
-    #[Route('/movies_old', name: 'app_movies_old')]  //methods definiuje jakie metody są dostępne przy zdefiniowanej ścieżce
+    #[Route('/', name: 'app_movies_old')]  //methods definiuje jakie metody są dostępne przy zdefiniowanej ścieżce
     public function indexOld(): Response {
         $movies = ["Film1", "Film2", "Film3"];
         return $this -> render('index.html.twig', array(
