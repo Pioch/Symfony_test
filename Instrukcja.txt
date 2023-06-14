@@ -1,3 +1,11 @@
+Po skopiowaniu(zaktualizowaniu) projektu na nowy komputer:
+- symfony composer update
+- symfony console make:migration
+- symfony console doctrine:migration:migrate 
+- npm run dev -> kompilacja assetów webpack (tworzy/aktualizuje folder public/build)
+- npm run watch -> kompiluje pliki js w assets
+- npx tailwindcss init -p -> stworzenie pliku konfiguracyjnego tailwindcss
+
 1. Tworzenie projektu i komendy
 - symfony new my_project_directory --version="6.2.*" --webapp -> utworzenie projektu
 - symfony server:start - uruchomienie serwera na Windows
@@ -149,11 +157,45 @@ Funkcje w repozytoriach:
 - getClassName() > zwraca nazwę klasy
 
 8. Assets
+- npm run dev -> kompilacja assetów webpack (tworzy/aktualizuje folder public/build)
+- npm run watch -> kompiluje pliki js w assets
+
 - Sprawdzenie czy node jest zainstalowany: node -v
 - symfony composer require symfony/webpack-encore-bundle -> instalacja paczki webpack do tworzenia assetów
 - w webpack.config.js -> konfiguracja paczki webpack
 - npm install do działania webpack
-- npm run dev -> kompilacja assetów webpack (tworzy/aktualizuje folder public/build)
 - symfony composer require symfony/asset -> paczka do zarządzania assetami
+- dodanie pliku js do webpack.config.js (.addEntry('nazwa_pliku', './assets/nazwa_folderu/nazwa_pliku.js')) Dodaje plik do public/build po kompilacji
+- dodanie pliku do app.js w assets (import './javascript/nazwa_pliku.js';) dodaje kod z pliku do app.js w public/build po kompilacji
+- w base.html.twig: {{ encore_entry_script_tags('nazwa_pliku') }} -> przeszukuje public/build/app.js w poszukiwaniu pliku 'nazwa_pliku',
+w ten sposób plik jest podpięty do wszystkich stron w projekcie
 
-czas: 2:23:00
+9. TailwindCSS
+Instalacja biblioteki Tailwindcss, postcss i purgecss: npm install -D tailwindcss postcss purgecss-webpack-plugin glob-all path
+- npx tailwindcss init -p -> stworzenie pliku konfiguracyjnego tailwindcss
+- w postcss.config.js dodanie bibliotek ->
+
+let tailwindcss = require('tailwindcss');
+module.exports = {
+  plugins: [
+    tailwindcss('./tailwindcss.config.js'),
+    require('postcss-import'),
+    require('autoprefixer')
+  ]
+}
+
+Dodanie konfiguracji postcss do webpack (przed ; na końcu pliku lub wyżej): 
+- w webpack.config.js:
+
+ .enablePostCssLoader((options) => {
+        options.enablePostCssLoader = {
+            config: './postcss.config.js'
+        }
+    })
+
+- dodanie tailwindcss do app.css w assets/styles:
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+czas: 2:35:17

@@ -22,6 +22,9 @@ Encore
      */
     .addEntry('app', './assets/app.js')
 
+    //Dodanie pliku js do public po kompilacji
+    .addEntry('method2', './assets/javascript/method2.js')
+
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
@@ -68,6 +71,12 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+
+    .enablePostCssLoader((options) => {
+        options.enablePostCssLoader = {
+            config: './postcss.config.js'
+        }
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
