@@ -5,7 +5,7 @@ Po skopiowaniu(zaktualizowaniu) projektu na nowy komputer:
 - npm run dev -> kompilacja assetów webpack (tworzy/aktualizuje folder public/build)
 - npm run watch -> kompiluje pliki js w assets
 - npx tailwindcss init -p -> stworzenie pliku konfiguracyjnego tailwindcss
-- jak nie działa npm install node js
+- jak nie działa npm install to zainstaluj node js
 
 1. Tworzenie projektu i komendy
 - symfony new my_project_directory --version="6.2.*" --webapp -> utworzenie projektu
