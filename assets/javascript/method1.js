@@ -1,1 +1,1 @@
-cnosole.log('cos tam');
+console.log('cos tam');

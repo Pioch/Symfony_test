@@ -199,4 +199,17 @@ Dodanie konfiguracji postcss do webpack (przed ; na końcu pliku lub wyżej):
 @tailwind components;
 @tailwind utilities;
 
-czas: 2:35:17
+Do konfiguracji tailwind.config.js:
+content: [
+    "./assets/**/*.{vue, js, tx, jsx, tsx}", //** oznacza wszystkie pliki i pliki w podfolderach
+    "./templates/**/*.{html, twig}"
+  ], 
+
+- npm install autoprefixer -> instalacja autoprefixer
+- npm run build -> do skompilowania webpack
+- npx tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch -> kompilacja pliku tailwindcss
+
+10. Obrazki
+
+
+czas: 2:39:40
