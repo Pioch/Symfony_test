@@ -210,6 +210,105 @@ content: [
 - npx tailwindcss -i ./assets/styles/app.css -o ./public/build/app.css --watch -> kompilacja pliku tailwindcss
 
 10. Obrazki
+-  npm install file-loader --save-dev -> instalacja biblioteki do budowania obrazków
+Konfiguracja webpack.config.js:
+
+.copyFiles({
+        from: './assets/images', //skąd
+        to: 'images/[path][name].[hash:8].[ext]', //dokąd
+        pattern: /\.(png|jpg|jpeg)$/ //akceptowane rozszerzenia
+    })
+
+- npm run dev
+
+11. Odczytywanie z bazy danych na stronie html
+
+({{ zmienna|length }}) -> długość tablicy przekazanej w kontrolerze
+
+Pętla po przekazanej tablicy i odczyt danych z kolumn
+        {% for movie in movies %}
+            <h2 class="text-gray-700 font-bold text-3xl py-2">
+                    {{ movie.title }} //wartość z kolumny title
+            </h2>
+        {% endfor %}
+
+- composer require symfony/form -> dodanie biblioteki do tworzenia form
+- symfony console make:form NazwaFormy Nazwa_entity -> stworzenie formy dla danej klasy
+
+12. Dodawanie elementów do bazy danych ze strony html
+
+Utworzenie obiektu formy w kontrolerze:
+ public function create(Request $request): Response {
+        $movie = new Movie;
+        $form = $this->createForm(MovieFormType::class, $movie); //utworzenie obiektu formy
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newMovie = $form->getData();
+  
+            $imagePath = $form->get('imagePath')->getData(); //wyciągnięcie wartości nazwy klucza ze zmiennej
+            if ($imagePath) {
+                $newFileName = uniqid() . '.' . $imagePath->guessExtension(); //zmiana nazwa pliku gdy już taki istnieje
+
+                try {
+                    $imagePath->move( //przeniesienie pliku do innego folderu
+                        $this->getParameter('kernel.project_dir') . '/public/uploads',
+                        $newFileName
+                    );
+                } 
+                catch (FileException $e) {
+                    return new Response($e->getMessage());
+                }
+
+                $newMovie->setImagePath('/uploads/' . $newFileName); //nowa ścieżka do pliku
+            }
+
+            //wykonanie zapytania
+            $this->em->persist($newMovie); 
+            $this->em->flush();
+
+            return $this->redirectToRoute('movies'); //przekierowanie do strony (podaje się name z Route)
+
+            //Do testowania
+            //dd($newMovie);
+            //exit;
+        }
+
+        return $this -> render('movies/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    - composer require symfony/mime -> do działania metody guessExtension(0)
+
+Dodanie formy na stronie html: 
+ {{ form_start(form) }}  //form -> nazwa onbiektu formy z kontrolera
+
+        {{ form_widget(form) }} //W form_widget to co się znajduje jest pod formą
+        <button    
+            type="submit"
+            class="uppercase mt-15 bg-blue-500 text-gray-100 text-lg font-extrabold py-4 px-8 rounded-3xl">
+            Submit Post
+        </button>
+
+    {{ form_end(form) }}
+
+Dodanie stylów do formy:
+- należy dopisać : use Symfony\Component\Form\Extension\Core\Type\TextType dla textu
+- use Symfony\Component\Form\Extension\Core\Type\IntegerType; -> dla Int
+- use Symfony\Component\Form\Extension\Core\Type\TextareaType; -> dla textarea
+- use Symfony\Component\Form\Extension\Core\Type\FileType; -> dla plików 
+- use Symfony\Component\HttpFoundation\File\Exception\FileException; -> dla złapanie wyjątku podczas przesyłania pliku
+
+add('title', TextType::class, [ //TextType::class -> text IntegerType::class -> Integer TextareaType::class -> textarea FileType -> pliki
+                'attr' => array(
+                    'class' => 'bg-transparent block border-b-2 w-full h-20 text-6xl outlinenone', //klasy
+                    'placeholder' => 'Wprowadź tytuł' //tekst wyświetlany gdy element jest pusty
+                ),
+                'label' => false -> wyłączenie wyświetlania napisu z nazwą kolumny
+            ])
+
+11. Aktualizacja elementów z bazy danych na stronie html
 
 
-czas: 2:39:40
+czas: 3:31:09
