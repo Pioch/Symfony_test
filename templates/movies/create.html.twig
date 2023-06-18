@@ -6,6 +6,12 @@
         Create Movie
     </h1>
 
+     {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+
     {{ form_start(form) }}
 
         {{ form_widget(form) }}

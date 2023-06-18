@@ -78,6 +78,9 @@ class MoviesController extends AbstractController
             //dd($newMovie);
             //exit;
         }
+        else if ($form->isSubmitted() && $form->isValid() && $form->get('imagePath')->getData() === null) {
+            $this->addFlash('success', 'Nie wybrano pliku');
+        }
 
         return $this -> render('movies/create.html.twig', [
             'form' => $form->createView()
