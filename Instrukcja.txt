@@ -309,6 +309,75 @@ add('title', TextType::class, [ //TextType::class -> text IntegerType::class -> 
             ])
 
 11. Aktualizacja elementów z bazy danych na stronie html
+ //edycja wpisu
+    #[Route('movies/edit/{id}', name: 'edit_movie')]
+    public function edit($id, Request $request): Response {
+        $movie = $this->movieRepository->find($id);
+        $form = $this->createForm(MovieFormType::class, $movie);
+        $form->handleRequest($request);
+        $imagePath = $form->get('imagePath')->getData();
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($imagePath) { //czy obrazek istnieje
+                //jak istnieje to wstawi go na serwer
+                if ($movie->getImagePath() !== null) {
+                    if (file_exists($this->getParameter('kernel.project_dir') . '/public' . $movie->getImagePath())) {
+                  
+                        $this->getParameter('kernel.project_dir') . $movie->getImagePath();
+                        $newFileName = uniqid() . '.' . $imagePath->guessExtension();
 
-czas: 3:31:09
+                        try {
+                            $imagePath->move( //przeniesienie pliku do innego folderu
+                                $this->getParameter('kernel.project_dir') . '/public/uploads',
+                                $newFileName
+                            );
+                        } 
+                        catch (FileException $e) {
+                            return new Response($e->getMessage());
+                        }
+
+                        //zmiana kolumn w bazie danych
+                        $movie->setTitle($form->get('title')->getData());
+                        $movie->setReleaseYear($form->get('releaseYear')->getData());
+                        $movie->setDescription($form->get('description')->getData());
+                        $movie->setImagePath('/uploads/' . $newFileName);
+                        $this->em->flush();
+                        return $this->redirectToRoute('movies');
+                    }
+                }
+            }
+            else {
+                $movie->setTitle($form->get('title')->getData());
+                $movie->setReleaseYear($form->get('releaseYear')->getData());
+                $movie->setDescription($form->get('description')->getData());
+
+                $this->em->flush();
+                return $this->redirectToRoute('movies');
+            }
+        }
+
+11. Usuwanie wspisów z bazy danych na stronie
+    //usuwanie wpisu
+    #[Route('movies/delete/{id}', name: 'delete_movie', methods: ['GET', 'DELETE'])]
+    public function delete($id): Response {
+        $movie = $this->movieRepository->find($id);
+        $this->em->remove($movie);
+        $this->em->flush();
+
+        return $this->redirectToRoute('movies');
+    }
+
+12. Sprawdzanie modelu
+- do działania Asert -> composer require symfony/validator doctrine/annotations
+W klasie Entity:
+- use Symfony\Component\Validator\Constraints as Assert; -> do #[Assert\NotBlank], #[Assert\Length(min:długość)]
+- #[Assert\NotBlank] -> zapobiega przed wprowadzeniem pustego pola
+- #[Assert\Length(min:długość, max:długość)] -> ustalenie minimalnej/maksymalnej długości tekstu
+- w FormType w add pod attr:
+'required' => false -> usuwa domyślnie wyświetlany komunikat przy próbie zatwierdzenia pustego labela
+- Dodanie ? przed typem zmiennej w klasie Entity w funkcjach setNazwaKolumny() -> Walidatcja podczas edycji wpisów
+- #[Assert\NotBlank] psuje przy plikach, należy dopisać przy tworzeniu $form->get('imagePath')->getData() !== null w warunke z submit
+
+13. Logowanie i rejestracja
+
+czas: 3:56:13
