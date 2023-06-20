@@ -379,5 +379,22 @@ W klasie Entity:
 - #[Assert\NotBlank] psuje przy plikach, należy dopisać przy tworzeniu $form->get('imagePath')->getData() !== null w warunke z submit
 
 13. Logowanie i rejestracja
+- composer require symfony/security-bundle -> instalacja biblioteki
+Utworzenie tablicy urzytkowników:
+- symfony console make:user NazwaTablicy (np. symfony console make:user User)
+- unikalna wartość wyświetlana jako nazwa użytkownika (email, username, uuid) (np. email)
+- czy zaszyfrować hasło
+
+- w config/packages/security.yaml
+- symfony console make:migration -> utworzenie migracji
+
+- zakomentowanie jak symfony console make:migration nie działa w vendor\doctrine\migrations\lib\Doctrine\Migrations\Metadata\Storage\TableMetadataStorage.php: 
+        $expectedTable = $this->getExpectedTable();
+
+        if ($this->needsUpdate($expectedTable) !== null) {
+            throw MetadataStorageError::notUpToDate();
+        }
+- symfony console doctrine:migrations:migrate -> jak nie działa usunąć pliki z php z migrations/ i ponownie utworzyć migrację
+
 
 czas: 3:56:13
