@@ -396,5 +396,22 @@ Utworzenie tablicy urzytkowników:
         }
 - symfony console doctrine:migrations:migrate -> jak nie działa usunąć pliki z php z migrations/ i ponownie utworzyć migrację
 
+Dodanie kolumny to tabeli:
+- Do pisanie w klasie entity nowej kolumny i funkcji oraz jak unikalna #[UniqueEntity(fields: ['nazwa_kolumny'], message: 'Wiadomość jak się wyświetla')]
+- symfony console doctrine:migrations:diff 
+- symfony console doctrine:migrations:migrate   
 
-czas: 3:56:13
+symfony console make:registration-form -> Utworzenie formy z rejestracją:
+- czy użyć utworzonej klasy użytkowników
+- czy dodać weryfikację email
+- czy automatycznie weryfikować użytkownika po rejestracji
+- gdzie przekierować użytkownika po rejestracji
+
+Logowanie:
+- symfony console make:auth -> Utworzenie strony z logowaniem
+- 1 -> Login form authenticator
+- nazwa klasy logowania
+- nazwa kontrolera
+- czy utworzyć strone /logout
+
+czas: 4:07:10
