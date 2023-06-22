@@ -413,5 +413,29 @@ Logowanie:
 - nazwa klasy logowania
 - nazwa kontrolera
 - czy utworzyć strone /logout
+Ustawienie przekierowania po zalogowaniu:
+- w LoginFormAuthenticator (Repozytorium od logowania) zakomentować: throw new \Exception('TODO: provide a valid redirect inside '.__FILE__); i
+odkomentować: return new RedirectResponse($this->urlGenerator->generate('name_z_route'));
+
+- {{ app.user.username}} -> wyświetlenie aktualnie zalogowanego użytkownika na stronie
+- href="/{{ app.user ? 'logout' : 'login' }}" -> Przycisk zaloguj/wyloguj przekierowanie
+- {{ app.user ? 'Wyloguj' : 'Zaloguj' }} -> Tekst przycisku wyloguj/zaloguj
+
+14. Ukrywanie elementów na stronach dla niezalogowanych urzytkowników
+   {% if app.user %}
+        {{ app.user.username }}
+        <div class="mx-auto w-4/5 my-8">
+        <a href="movies/create" class="uppercase border-gray-500 text-lg py-4 px-6 rounded bg-gray-800 text-white">Create new movie</a>
+    </div>
+    {% endif %}
+
+Zablokowanie stron dla niezalogowanych urzytkowników:
+- w config/packages/security.yaml dopisać ścieżki i dla jakich rul strony są dostępne
+
+access_control:
+    - { path: ^/movies/create, roles: ROLE_USER }
+
+- Utworzenie pliku src/Security/AuthenticationEntryPoint.php do ustawienie strony do przekierowania gdy niezalogowany 
+oraz dodnie wpisu w security.yaml w main: entry_point: App\Security\AuthenticationEntryPoint
 
 czas: 4:07:10
