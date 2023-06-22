@@ -438,4 +438,6 @@ access_control:
 - Utworzenie pliku src/Security/AuthenticationEntryPoint.php do ustawienie strony do przekierowania gdy niezalogowany 
 oraz dodnie wpisu w security.yaml w main: entry_point: App\Security\AuthenticationEntryPoint
 
+Link: https://symfony.com/doc/current/security/access_denied_handler.html#customizing-all-access-denied-responses
+
 czas: 4:07:10
