@@ -2,9 +2,16 @@
 
 
 {% block body %}
+
+    {% for message in app.session.flashBag('note') %}
+        <div class="alert alert-success">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+
     {{_self}} 
     {{author}} 
     <h1 class="bg-blue-500 text-2xl text-center font-bold">Pączki</h1>
-    <img src="{{asset('build/images/kotek2.d6e9701e.jpg')}}" alt="">
+    <!--<img src="{#{asset('build/images/kotek2.d6e9701e.jpg')}#}" alt="">-->
 
 {% endblock %}

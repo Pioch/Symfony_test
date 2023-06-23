@@ -162,7 +162,7 @@ class MoviesController extends AbstractController
      
     //[Route('/movies', name: 'app_movies')]
     //#[Route('/movies/{name}', name: 'app_movies')] //{name} przy ścieżce pozwala na wyświetlenie strony z funkcji niżej z dowolnej ścieżki /nazwa_folderu/name, gdzie name jest dowolne
-    #[Route('/', name: 'app_movies_old')]  //methods definiuje jakie metody są dostępne przy zdefiniowanej ścieżce
+    #[Route('/', name: 'index')]  //methods definiuje jakie metody są dostępne przy zdefiniowanej ścieżce
     public function indexOld(): Response {
         $movies = ["Film1", "Film2", "Film3"];
         return $this -> render('index.html.twig', array(

@@ -14,10 +14,10 @@
         </div>
     {% endif %}
 
-    {% for message in app.flashes('note') %}
-            <div class="alert alert-success">
-                <p>{{ message }}</p>
-            </div>
+    {% for message in app.session.flashBag.get('note') %}
+        <div class="alert alert-success">
+            <p>{{ message }}</p>
+        </div>
     {% endfor %}
    
 

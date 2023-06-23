@@ -17,6 +17,7 @@ security:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\LoginFormAuthenticator
+            access_denied_url: /
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -34,7 +35,6 @@ security:
     access_control:
         - { path: ^/movies/create, roles: ROLE_USER2 }
         - { path: ^/movies/edit, roles: ROLE_USER }
-
 when@test:
     security:
         password_hashers:

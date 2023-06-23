@@ -435,9 +435,8 @@ Zablokowanie stron dla niezalogowanych urzytkowników:
 access_control:
     - { path: ^/movies/create, roles: ROLE_USER }
 
-- Utworzenie pliku src/Security/AuthenticationEntryPoint.php do ustawienie strony do przekierowania gdy niezalogowany 
-oraz dodnie wpisu w security.yaml w main: entry_point: App\Security\AuthenticationEntryPoint
-
-Link: https://symfony.com/doc/current/security/access_denied_handler.html#customizing-all-access-denied-responses
-
-czas: 4:07:10
+Przekierowanie do strony przy odmowie dostępu:
+- w security.yaml doipisać w 
+firewalls: 
+    mains: 
+        access_denied_url: / <- tutaj adres
