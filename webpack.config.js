@@ -24,6 +24,7 @@ Encore
 
     //Dodanie pliku js do public po kompilacji
     .addEntry('method2', './assets/javascript/method2.js')
+    .addEntry('test', './assets/styles/test.css')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

@@ -2,8 +2,9 @@ Po skopiowaniu(zaktualizowaniu) projektu na nowy komputer:
 - symfony composer update
 - symfony console make:migration
 - symfony console doctrine:migration:migrate 
-- npm run dev -> kompilacja assetów webpack (tworzy/aktualizuje folder public/build)
-- npm run watch -> kompiluje pliki js w assets
+- -npm run build
+//- npm run dev -> kompilacja assetów webpack (tworzy/aktualizuje folder public/build)
+//- npm run watch -> kompiluje pliki js w assets
 - npx tailwindcss init -p -> stworzenie pliku konfiguracyjnego tailwindcss
 - jak nie działa npm install to zainstaluj node js
 
@@ -12,7 +13,7 @@ Po skopiowaniu(zaktualizowaniu) projektu na nowy komputer:
 - symfony server:start - uruchomienie serwera na Windows
 - php bin/console server:run  - uruchomienie serwera na Linux
 - composer require symfony/<component_name> - instalacja komponentu
-- console debug:route -> wyświetla wszystkie dostępne ścieżki
+- symfony console debug:route -> wyświetla wszystkie dostępne ścieżki
 - symfony console -> Wyświetla wszystkie dostępne komendy w konsoli
 - W konsoli symfony console make:controller <nazwa kontrolera>  -> Tworzy nowy kontroler
 - symfony console help -> Wyświetlenie pomocy 
@@ -109,7 +110,8 @@ Migracja Utworzony tabel (klas entities) z bazą danych:
 - yes
 
 Relacje między tabelami:
-- ManyToOne -> Dodanie do pierwszej tabela kolumny np. z id z drugiej tabeli lub utworzenie nowej tabeli z id pierwszej i z id drugiej tabeli
+Dodaje się przez symfony conole make:entity nazwa_entity i w typie pola wpisuje się relację
+- ManyToOne -> Dodanie do pierwszej tabeli kolumny np. z id z drugiej tabeli lub utworzenie nowej tabeli z id pierwszej i z id drugiej tabeli
 - OneToMany -> Dodanie do pierwszej tabeli id z drugiej i dodanie do drugiej tabeli id z pierwszej
 - ManyToMany -> Tworzy nową tablice łączącą pierwszą i drugą (id z pierwszej i id z drugiej tabeli)
 
@@ -219,7 +221,7 @@ Konfiguracja webpack.config.js:
         pattern: /\.(png|jpg|jpeg)$/ //akceptowane rozszerzenia
     })
 
-- npm run dev
+- npm run dev -> kompiluje webpack (normalne nazy plików)
 
 11. Odczytywanie z bazy danych na stronie html
 
@@ -440,3 +442,11 @@ Przekierowanie do strony przy odmowie dostępu:
 firewalls: 
     mains: 
         access_denied_url: / <- tutaj adres
+
+
+Dołączenie do strony plików css/js za extends:
+
+{% block stylesheets %}
+{{ parent() }} <- uwzględni te z pliku w extends
+<link rel="stylesheet" href="{{ asset('build/login.css') }}">
+{% endblock %}

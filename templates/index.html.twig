@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('build/test.css') }}">{% endblock %}
 
 {% block body %}
 
@@ -8,6 +8,10 @@
             <p>{{ message }}</p>
         </div>
     {% endfor %}
+
+    <div id="test_div">
+
+    </div>
 
     {{_self}} 
     {{author}} 

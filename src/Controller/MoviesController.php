@@ -46,6 +46,9 @@ class MoviesController extends AbstractController
         $form = $this->createForm(MovieFormType::class, $movie); //utworzenie obiektu formy
         $form->handleRequest($request);
 
+        $user = $this->getUser()->getUserId(); //trzeba dopisać funkcję w User entity
+        
+       
         if ($form->isSubmitted() && $form->isValid() && $form->get('imagePath')->getData() !== null) {
             $newMovie = $form->getData();
   
